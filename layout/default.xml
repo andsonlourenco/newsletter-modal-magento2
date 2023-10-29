@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="page.wrapper">
+            <block class="Magento\Newsletter\Block\Subscribe" name="custom.newsletter" template="Magento_Newsletter::subscribe.phtml" before="footer-container" />
+        </referenceContainer>
+
+        <referenceContainer name="footer">
+            <referenceBlock name="form.subscribe" remove="true" />
+        </referenceContainer>
+    </body>
+</page>

@@ -1,0 +1,120 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var \Magento\Newsletter\Block\Subscribe $block */
+
+$currentUrl = $this->getUrl('*/*/*', ['_current' => true, '_use_rewrite' => true]);
+
+if ($currentUrl == $block->getUrl('')): ?>
+
+    <div id="modalNewsletter" class="modalNewsletter">
+        <div class="modal-body-content">
+
+            <h3 class="modalNewsletter--title">Increva-se na Nossa Newsletter e Esteja Sempre por dentro das ultimas tendências da Moda!</h3>
+
+            <div class="block newsletter">
+                <div class="title"><strong><?= $block->escapeHtml(__('Newsletter')) ?></strong></div>
+                <div class="content">
+                    <form class="form subscribe"
+                        novalidate
+                        action="<?= $block->escapeUrl($block->getFormActionUrl()) ?>"
+                        method="post"
+                        data-mage-init='{"validation": {"errorClass": "mage-error"}}'
+                        id="newsletter-validate-detail">
+                        <div class="field newsletter">
+                            <div class="control">
+                                <label for="newsletter">
+                                    <span class="label">
+                                        <?= $block->escapeHtml(__('Sign Up for Our Newsletter:')) ?>
+                                    </span>
+                                    <input name="email" type="email" id="newsletter"
+                                        placeholder="<?= $block->escapeHtml(__('Enter your email address')) ?>"
+                                        data-mage-init='{"mage/trim-input":{}}'
+                                        data-validate="{required:true, 'validate-email':true}"
+                                        autocomplete="off"
+                                    />
+                                </label>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <button class="action subscribe primary"
+                                    title="<?= $block->escapeHtmlAttr(__('Subscribe')) ?>"
+                                    type="submit"
+                                    aria-label="Subscribe">
+                                <span><?= $block->escapeHtml(__('Subscribe')) ?></span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/x-magento-init">
+        {
+            "*": {
+                "Magento_Customer/js/block-submit-on-send": {
+                    "formId": "newsletter-validate-detail"
+                }
+            }
+        }
+    </script>
+
+    <script type="text/javascript">
+        require([
+            "jquery",
+            "Magento_Ui/js/modal/modal",
+        ], function ($, modal) {
+
+            $(document).ready(function () {
+                var popupModal = $('#modalNewsletter');
+                var options = {
+                    type: 'popup',
+                    responsive: true,
+                };
+
+                var popup = modal(options, popupModal);
+
+
+                var modalData = getCookie('newsletterModalData');
+
+                if (!modalData) {
+                    popupModal.modal('openModal');
+                    setCookie('newsletterModalData', 'displayed', 30);
+
+                }
+            });
+
+            function setCookie(cookieName, value, seconds) {
+                var date = new Date();
+                date.setTime(date.getTime() + (seconds * 1000));
+                var expires = "expires=" + date.toUTCString();
+                document.cookie = cookieName + "=" + value + ";" + expires + ";path=/";
+            }
+
+            function getCookie(cookieName) {
+                var cname = cookieName + "=";
+                var decodedCookie = decodeURIComponent(document.cookie);
+                var splintDecodeCookie = decodedCookie.split(';');
+
+                for (var i = 0; i < splintDecodeCookie.length; i++) {
+
+                    var cookieItem = splintDecodeCookie[i];
+
+                    while (cookieItem.charAt(0) == ' ') {
+                        cookieItem = cookieItem.substring(1);
+                    }
+
+                    if (cookieItem.indexOf(cname) == 0) {
+                        return cookieItem.substring(cname.length, cookieItem.length);
+                    }
+                }
+
+                return "";
+            }
+        });
+    </script>
+<?php endif; ?>
